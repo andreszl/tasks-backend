@@ -194,7 +194,7 @@ export default class AuthController {
   ): Promise<DecodedUser | never> {
     const decodedUser: DecodedUser | null = await this.authService.verifyToken(
       token,
-      this.configService.get<string>('ACCESS_TOKEN') || 'carvajal',
+      this.configService.get<string>('ACCESS_TOKEN') || 'domina',
     );
 
     if (!decodedUser) {

@@ -29,6 +29,7 @@ import InternalServerErrorResponse from '../../../responses/internal-server-erro
 import UnauthorizeResponse from '../../../responses/unauthorize.response';
 import NoContentResponse from '../../../responses/no-content.response';
 import NotFoundResponse from '../../../responses/not-found.response';
+import AuthBearer from '@decorators/auth-bearer.decorator';
 
 @ApiTags('Auth')
 @UseInterceptors(WrapResponseInterceptor)
@@ -177,6 +178,32 @@ export default class AuthController {
     }
 
     return this.usersService.update(foundUser._id, { code: 0, verified: true });
+  }
+
+  @ApiOkResponse({
+    type: User,
+    description: '200, returns a decoded user from access token',
+  })
+  @ApiUnauthorizedResponse(UnauthorizeResponse)
+  @ApiInternalServerErrorResponse(InternalServerErrorResponse)
+  @ApiBearerAuth()
+  @Auth()
+  @Get('token')
+  async getUserByAccessToken(
+    @AuthBearer() token: string,
+  ): Promise<DecodedUser | never> {
+    const decodedUser: DecodedUser | null = await this.authService.verifyToken(
+      token,
+      this.configService.get<string>('ACCESS_TOKEN') || 'carvajal',
+    );
+
+    if (!decodedUser) {
+      throw new ForbiddenException('Incorrect token');
+    }
+
+    const { exp, iat, ...user } = decodedUser;
+
+    return user;
   }
   
 }

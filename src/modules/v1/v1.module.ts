@@ -2,14 +2,16 @@ import { Module } from '@nestjs/common';
 import { Routes, RouterModule } from '@nestjs/core';
 
 import AuthModule from './auth/auth.module';
-import UsersModule from './users/users.module';
+import TaskModule from './task/task.module';
+
 
 const routes: Routes = [
   {
     path: '/v1',
     children: [
       { path: '/auth', module: AuthModule },
-      { path: '/users', module: UsersModule },
+      { path: '/task', module: TaskModule },
+
     ],
   },
 ];
@@ -18,7 +20,7 @@ const routes: Routes = [
   imports: [
     RouterModule.register(routes),
     AuthModule,
-    UsersModule,
+    TaskModule
   ],
 })
 export default class V1Module {}

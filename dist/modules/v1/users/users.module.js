@@ -12,7 +12,6 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const mongoose_1 = require("@nestjs/mongoose");
 const users_schema_1 = require("./schemas/users.schema");
-const users_controller_1 = __importDefault(require("./users.controller"));
 const users_service_1 = __importDefault(require("./users.service"));
 const users_repository_1 = __importDefault(require("./users.repository"));
 let UsersModule = class UsersModule {
@@ -25,7 +24,7 @@ UsersModule = __decorate([
                     schema: users_schema_1.UserSchema,
                 }]),
         ],
-        controllers: [users_controller_1.default],
+        controllers: [],
         providers: [users_service_1.default, users_repository_1.default],
         exports: [users_service_1.default, users_repository_1.default],
     })

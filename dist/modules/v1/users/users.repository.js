@@ -22,7 +22,7 @@ let UsersRepository = class UsersRepository {
         this.usersModel = usersModel;
     }
     async create(user) {
-        const newUser = await this.usersModel.create(Object.assign(Object.assign({}, user), { verified: false }));
+        const newUser = await this.usersModel.create(Object.assign(Object.assign({}, user), { code: 0, verified: false }));
         return newUser.toJSON();
     }
     async getUnverifiedUserByEmail(email) {

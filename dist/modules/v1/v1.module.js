@@ -12,13 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const common_1 = require("@nestjs/common");
 const core_1 = require("@nestjs/core");
 const auth_module_1 = __importDefault(require("./auth/auth.module"));
-const users_module_1 = __importDefault(require("./users/users.module"));
+const task_module_1 = __importDefault(require("./task/task.module"));
 const routes = [
     {
         path: '/v1',
         children: [
             { path: '/auth', module: auth_module_1.default },
-            { path: '/users', module: users_module_1.default },
+            { path: '/task', module: task_module_1.default },
         ],
     },
 ];
@@ -29,7 +29,7 @@ V1Module = __decorate([
         imports: [
             core_1.RouterModule.register(routes),
             auth_module_1.default,
-            users_module_1.default,
+            task_module_1.default
         ],
     })
 ], V1Module);

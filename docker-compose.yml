@@ -15,7 +15,20 @@ services:
     links:
       - mongodb
       - redis
-    command: npm run start
+
+  create-task:
+    build:
+      context: .
+      dockerfile: ./docker/CreateTask.Dockerfile
+    container_name: createTask
+    ports:
+      - '3003:3002'
+    depends_on:
+      - mongodb
+      - redis
+    links:
+      - mongodb
+      - redis
 
   mongodb:
     container_name: mongodb

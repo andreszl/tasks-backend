@@ -56,11 +56,11 @@ export default class AuthService {
 
     const accessToken = this.jwtService.sign(payload, {
       expiresIn: authConstants.jwt.expirationTime.accessToken,
-      secret: this.configService.get<string>('ACCESS_TOKEN') || 'carvajal',
+      secret: this.configService.get<string>('ACCESS_TOKEN') || 'domina',
     });
     const refreshToken = this.jwtService.sign(payload, {
       expiresIn: authConstants.jwt.expirationTime.refreshToken,
-      secret: this.configService.get<string>('REFRESH_TOKEN') || 'carvajal',
+      secret: this.configService.get<string>('REFRESH_TOKEN') || 'domina',
     });
 
     await this.authRepository.addRefreshToken(
@@ -91,7 +91,7 @@ export default class AuthService {
       { id },
       {
         expiresIn: authConstants.jwt.expirationTime.accessToken,
-        secret: this.configService.get<string>('ACCESS_TOKEN') || 'carvajal',
+        secret: this.configService.get<string>('ACCESS_TOKEN') || 'domina',
       },
     );
   }

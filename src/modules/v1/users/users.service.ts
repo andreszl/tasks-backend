@@ -50,10 +50,7 @@ export default class UsersService {
     return this.usersRepository.getUnverifiedUserById(id);
   }
 
-  public update(
-    id: Types.ObjectId,
-    data: UpdateUserDto,
-  ): Promise<User | null> {
+  public update(id: Types.ObjectId, data: UpdateUserDto): Promise<User | null> {
     return this.usersRepository.updateById(id, data);
   }
 

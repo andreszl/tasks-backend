@@ -1,7 +1,7 @@
 {
-  "name": "carvajal-api",
+  "name": "api",
   "version": "0.0.3",
-  "description": "carvajal-api",
+  "description": "api",
   "author": "",
   "license": "MIT",
   "scripts": {

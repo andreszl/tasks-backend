@@ -39,6 +39,7 @@ const conflict_response_1 = __importDefault(require("../../../responses/conflict
 const internal_server_error_response_1 = __importDefault(require("../../../responses/internal-server-error.response"));
 const unauthorize_response_1 = __importDefault(require("../../../responses/unauthorize.response"));
 const no_content_response_1 = __importDefault(require("../../../responses/no-content.response"));
+const not_found_response_1 = __importDefault(require("../../../responses/not-found.response"));
 let AuthController = class AuthController {
     constructor(authService, usersService, mailerService, configService) {
         this.authService = authService;
@@ -102,6 +103,14 @@ let AuthController = class AuthController {
             throw new common_1.NotFoundException();
         }
         return {};
+    }
+    async verifyUser(token) {
+        const { id } = await this.authService.verifyEmailVerToken(token, this.configService.get('ACCESS_TOKEN') || 'domina');
+        const foundUser = await this.usersService.getUnverifiedUserById(id);
+        if (!foundUser) {
+            throw new common_1.NotFoundException('The user does not exist');
+        }
+        return this.usersService.update(foundUser._id, { code: 0, verified: true });
     }
 };
 __decorate([
@@ -170,6 +179,16 @@ __decorate([
     __metadata("design:paramtypes", [String]),
     __metadata("design:returntype", Promise)
 ], AuthController.prototype, "logout", null);
+__decorate([
+    (0, swagger_1.ApiNoContentResponse)(no_content_response_1.default),
+    (0, swagger_1.ApiNotFoundResponse)(not_found_response_1.default),
+    (0, common_1.HttpCode)(common_1.HttpStatus.NO_CONTENT),
+    (0, common_1.Get)('verify/:token'),
+    __param(0, (0, common_1.Param)('token')),
+    __metadata("design:type", Function),
+    __metadata("design:paramtypes", [String]),
+    __metadata("design:returntype", Promise)
+], AuthController.prototype, "verifyUser", null);
 AuthController = __decorate([
     (0, swagger_1.ApiTags)('Auth'),
     (0, common_1.UseInterceptors)(wrap_response_interceptor_1.default),

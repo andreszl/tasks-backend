@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const authConstants = {
     jwt: {
-        secret: 'carvajal',
+        secret: 'domina',
         expirationTime: {
             accessToken: '1d',
             refreshToken: '7d',

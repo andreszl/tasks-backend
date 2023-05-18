@@ -2,6 +2,7 @@ import { Request as ExpressRequest } from 'express';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
 import UsersService from '@v1/users/users.service';
+import { User } from '@v1/users/schemas/users.schema';
 import AuthService from './auth.service';
 import SignUpDto from './dto/sign-up.dto';
 import JwtTokensDto from './dto/jwt-tokens.dto';
@@ -18,4 +19,5 @@ export default class AuthController {
     sendChangePasswordCode(sendChangePasswordCodedto: SendChangePasswordCodeDto): Promise<any>;
     changePassword(changePasswordDto: ChangePasswordDto): Promise<any>;
     logout(token: string): Promise<{} | never>;
+    verifyUser(token: string): Promise<User | null>;
 }

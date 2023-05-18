@@ -72,11 +72,11 @@ let AuthService = class AuthService {
         };
         const accessToken = this.jwtService.sign(payload, {
             expiresIn: auth_constants_1.default.jwt.expirationTime.accessToken,
-            secret: this.configService.get('ACCESS_TOKEN') || 'carvajal',
+            secret: this.configService.get('ACCESS_TOKEN') || 'domina',
         });
         const refreshToken = this.jwtService.sign(payload, {
             expiresIn: auth_constants_1.default.jwt.expirationTime.refreshToken,
-            secret: this.configService.get('REFRESH_TOKEN') || 'carvajal',
+            secret: this.configService.get('REFRESH_TOKEN') || 'domina',
         });
         await this.authRepository.addRefreshToken(payload.email, refreshToken);
         return {
@@ -96,7 +96,7 @@ let AuthService = class AuthService {
     createVerifyToken(id) {
         return this.jwtService.sign({ id }, {
             expiresIn: auth_constants_1.default.jwt.expirationTime.accessToken,
-            secret: this.configService.get('ACCESS_TOKEN') || 'carvajal',
+            secret: this.configService.get('ACCESS_TOKEN') || 'domina',
         });
     }
     verifyEmailVerToken(token, secret) {

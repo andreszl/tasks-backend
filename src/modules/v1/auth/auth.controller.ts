@@ -1,5 +1,5 @@
-import { Body, Controller, HttpCode, Post, Delete, Param, Request, UnauthorizedException, UseGuards, NotFoundException, ForbiddenException, HttpStatus, UseInterceptors } from '@nestjs/common';
-import { ApiTags, ApiBody, ApiOkResponse, ApiInternalServerErrorResponse, ApiUnauthorizedResponse, ApiBearerAuth, ApiBadRequestResponse, ApiConflictResponse, ApiNoContentResponse, ApiExtraModels } from '@nestjs/swagger';
+import { Body, Controller, HttpCode, Get, Post, Delete, Param, Request, UnauthorizedException, UseGuards, NotFoundException, ForbiddenException, HttpStatus, UseInterceptors } from '@nestjs/common';
+import { ApiTags, ApiBody, ApiOkResponse, ApiNotFoundResponse, ApiInternalServerErrorResponse, ApiUnauthorizedResponse, ApiBearerAuth, ApiBadRequestResponse, ApiConflictResponse, ApiNoContentResponse, ApiExtraModels } from '@nestjs/swagger';
 import { Request as ExpressRequest } from 'express';
 import { MailerService } from '@nestjs-modules/mailer';
 import { ConfigService } from '@nestjs/config';
@@ -28,6 +28,7 @@ import ConflictResponse from '../../../responses/conflict.response';
 import InternalServerErrorResponse from '../../../responses/internal-server-error.response';
 import UnauthorizeResponse from '../../../responses/unauthorize.response';
 import NoContentResponse from '../../../responses/no-content.response';
+import NotFoundResponse from '../../../responses/not-found.response';
 
 @ApiTags('Auth')
 @UseInterceptors(WrapResponseInterceptor)
@@ -159,4 +160,23 @@ export default class AuthController {
 
     return {};
   }
+
+  @ApiNoContentResponse(NoContentResponse)
+  @ApiNotFoundResponse(NotFoundResponse)
+  @HttpCode(HttpStatus.NO_CONTENT)
+  @Get('verify/:token')
+  async verifyUser(@Param('token') token: string): Promise<User | null> {
+    const { id } = await this.authService.verifyEmailVerToken(
+      token,
+      this.configService.get<string>('ACCESS_TOKEN') || 'domina',
+    );
+    const foundUser = await this.usersService.getUnverifiedUserById(id) as UserDocument;
+
+    if (!foundUser) {
+      throw new NotFoundException('The user does not exist');
+    }
+
+    return this.usersService.update(foundUser._id, { code: 0, verified: true });
+  }
+  
 }
